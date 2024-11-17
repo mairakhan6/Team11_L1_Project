@@ -1,5 +1,10 @@
 #include "player.hpp"
 
+Player::Player() {
+    name = "";
+    isWhite = false;
+    timer = 0;
+};
 Player::Player(std::string name, bool isWhite, float timeLimit)
     : name(name), isWhite(isWhite), timer(timeLimit) {}
 

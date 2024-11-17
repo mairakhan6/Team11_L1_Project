@@ -15,11 +15,13 @@ class Timer
         sf::Font font;
 
     public:
+        Timer();
         Timer(float timeLimit); 
         void start();
         void stop();
         void reset();
         void update(float deltaTime);
+        void setTimeLimit(float timeLimit);
         float getTimeLeft() const;
         void draw(sf::RenderWindow& window) ;
 

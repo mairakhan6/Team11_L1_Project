@@ -3,9 +3,12 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include "timer.hpp"
 #include "player.hpp"
 #include "boardTheme.hpp"
 #include "welcome.hpp"
+#include "inputBox.hpp"
+#include "dropdown.hpp"
 
 class Settings {
 public:
@@ -16,16 +19,28 @@ private:
     void settingScreen();
     void handleEvents(sf::RenderWindow& window);
     void openWelcome();
+    void saveSettings();
 
-    sf::Text player1NameText, player2NameText, timerText;
+    // next and back
     sf::Font font;
     sf::RectangleShape backButton, nextButton;
     sf::Text backText, nextText;
-    sf::Text player1Input, player2Input;
+
+    // inputs (keyboard ones)
+    sf::Text player1Label, player2Label, themeLabel, timerLabel, minsLabel, secsLabel;
+    InputBox player1Input;
+    InputBox player2Input;
+    Dropdown themeDropdown;
+    Dropdown timerMins;
+    Dropdown timerSecs;
+
+    // data for input storage
     std::string player1Name, player2Name;
     float timerLimit;
     bool timerSet;
-    BoardTheme* selectedBoardTheme;
+    BoardTheme* boardTheme;
+    Player player1, player2;
+    Timer timer;
 };
 
-#endif // SETTINGS_HPP
+#endif 

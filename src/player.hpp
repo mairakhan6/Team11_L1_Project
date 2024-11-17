@@ -12,6 +12,7 @@ class Player
         bool isWhite;
         Timer timer;
     public:
+        Player();
         Player(string name, bool isWhite, float timeLimit);
         // in settings, when u enter name 
         string getName() const;

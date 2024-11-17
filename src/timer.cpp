@@ -1,6 +1,15 @@
 #include "timer.hpp"
 #include <iostream>
 
+Timer::Timer(){
+    if (!font.loadFromFile("fonts/english.ttf")) {
+        std::cerr << "Error loading font!" << std::endl;
+    }
+    timeText.setFont(font);
+    timeText.setCharacterSize(30);
+    timeText.setFillColor(sf::Color::White);
+}
+
 Timer::Timer(float timeLimit) : timeLimit(timeLimit), timeRemaining(timeLimit), running(false) {
     if (!font.loadFromFile("fonts/english.ttf")) {
         std::cerr << "Error loading font!" << std::endl;
@@ -38,6 +47,11 @@ void Timer::update(float deltaTime) {
             stop();
         }
     }
+}
+
+void Timer::setTimeLimit(float timeLimit) {
+    this->timeLimit = timeLimit;
+    this->timeRemaining = timeLimit;
 }
 
 float Timer::getTimeLeft() const {
