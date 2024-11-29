@@ -2,7 +2,7 @@
 #include <iostream>
 
 Timer::Timer(){
-    if (!font.loadFromFile("fonts/english.ttf")) {
+    if (!font.loadFromFile("src/fonts/english.ttf")) {
         std::cerr << "Error loading font!" << std::endl;
     }
     timeText.setFont(font);
@@ -11,7 +11,7 @@ Timer::Timer(){
 }
 
 Timer::Timer(float timeLimit) : timeLimit(timeLimit), timeRemaining(timeLimit), running(false) {
-    if (!font.loadFromFile("fonts/english.ttf")) {
+    if (!font.loadFromFile("src/fonts/english.ttf")) {
         std::cerr << "Error loading font!" << std::endl;
     }
     timeText.setFont(font);

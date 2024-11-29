@@ -5,7 +5,7 @@
 #include <SFML/Window.hpp>
 #include "timer.hpp"
 #include "player.hpp"
-#include "boardTheme.hpp"
+#include "board.hpp"  // Updated from BoardTheme
 #include "welcome.hpp"
 #include "inputBox.hpp"
 #include "dropdown.hpp"
@@ -14,12 +14,16 @@ class Settings {
 public:
     Settings();
     void display(sf::RenderWindow& window);
+    Board* getBoard() const;  // New method to access the created board
+
 
 private:
     void settingScreen();
     void handleEvents(sf::RenderWindow& window);
     void openWelcome();
     void saveSettings();
+
+
 
     // next and back
     sf::Font font;
@@ -38,9 +42,9 @@ private:
     std::string player1Name, player2Name;
     float timerLimit;
     bool timerSet;
-    BoardTheme* boardTheme;
+    Board* board;  
     Player player1, player2;
     Timer timer;
 };
 
-#endif 
+#endif
