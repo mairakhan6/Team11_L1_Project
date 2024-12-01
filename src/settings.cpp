@@ -9,7 +9,7 @@ Settings::Settings() :
     timerSet(false), 
     board(nullptr)
 {
-    if (!font.loadFromFile("src/fonts/english.ttf")) {
+    if (!font.loadFromFile("fonts/english.ttf")) {
         std::cerr << "Error loading font" << std::endl;
     }
 
@@ -163,7 +163,7 @@ void Settings::handleEvents(sf::RenderWindow& window) {
 void Settings::display(sf::RenderWindow& window) {
     window.clear();
     sf::Texture backgroundTexture;
-    if (!backgroundTexture.loadFromFile("src/images/bkgd.jpg")) {
+    if (!backgroundTexture.loadFromFile("images/bkgd.jpg")) {
         std::cerr << "Error loading background image" << std::endl;
     }
     sf::Sprite background(backgroundTexture);

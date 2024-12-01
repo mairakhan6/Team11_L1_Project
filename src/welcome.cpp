@@ -6,11 +6,11 @@ void Welcome::display() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "CHESS GAME");
 
     sf::Texture backgroundTexture;
-    if (!backgroundTexture.loadFromFile("src/images/welcome.jpg")) {
+    if (!backgroundTexture.loadFromFile("images/welcome.jpg")) {
         std::cerr << "Error loading background image" << std::endl;
     }
     sf::Font font;
-    if (!font.loadFromFile("src/fonts/english.ttf")) {
+    if (!font.loadFromFile("fonts/english.ttf")) {
         std::cerr << "Error loading font" << std::endl;
     }
 

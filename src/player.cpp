@@ -25,7 +25,7 @@ void Player::setIsWhite(bool isWhite) {
 }
 
 void Player::updateTimer(float deltaTime) {
-    timer.update(deltaTime);  
+    timer.update();  
 }
 
 void Player::drawTimer(sf::RenderWindow& window)  {

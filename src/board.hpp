@@ -3,6 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <vector>
+#include <map>
+#include "piece.hpp"
+#include "timer.hpp"  // Include Timer class
 
 class Board {
 public:
@@ -15,6 +19,13 @@ public:
     void drawBoard(sf::RenderWindow& window);
     sf::Texture& getBackgroundTexture();
     void eventHandle(sf::RenderWindow& window);
+    void startGame();
+
+    // Made public for timer updates in main loop
+    bool gameStarted;
+    bool isWhiteTurn;
+    Timer player1Timer;
+    Timer player2Timer;
 
 private:
     // Private methods
@@ -25,17 +36,35 @@ private:
     void updateTheme(const std::string& theme);
     void setTimerLimit(int newTimerLimit); 
     void restartGame();
+    void initializePieces();
+    void loadPieceTextures();
+    void handlePieceSelection(const sf::Vector2i& mousePos);
+    bool isValidMove(Piece* piece, int x, int y) const;
+
+     // Helper methods
+    sf::Vector2f boardToScreenPosition(int x, int y) const;
+    sf::Vector2i screenToBoardPosition(float x, float y) const;
+    bool isValidBoardPosition(int x, int y) const;
+    std::string formatTime(float seconds);  // Add time formatting helper
 
     // Member variables
     sf::RectangleShape boardShape;        // Shape of the board
+    sf::RectangleShape selectedSquare;    // Highlight for selected piece
     sf::Font font;                       // Font for text
     sf::Text player1Info;                // Text for player 1 info
     sf::Text player2Info;                // Text for player 2 info
+    sf::Text startButton;
     sf::Text restartButton;
     sf::Text quitButton;
 
+    sf::RectangleShape startButtonBg;
     sf::RectangleShape restartButtonBg;
     sf::RectangleShape quitButtonBg;
+
+    std::map<std::string, sf::Texture> pieceTextures;  // Textures for pieces
+    std::vector<Piece> pieces;           // Vector of all pieces
+    bool isPieceSelected;                // Is a piece currently selected
+    Piece* selectedPiece;                // Currently selected piece
 
 
     sf::Sprite backgroundSprite;         // Background sprite
