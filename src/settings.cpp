@@ -1,7 +1,8 @@
 #include "settings.hpp"
+#include "game.hpp"
 #include <iostream>
 using namespace std;
-
+//maira
 Settings::Settings() :
     player1Name(""), 
     player2Name(""), 
@@ -26,20 +27,20 @@ void Settings::settingScreen() {
     sf::Color brown(92, 59, 39);
 
     // Back Button
-    backButton.setSize(sf::Vector2f(100.f, 50.f));
-    backButton.setPosition(50.f, 500.f);
+    backButton.setSize(sf::Vector2f(200.f, 50.f));
+    backButton.setPosition(50.f, 730.f);
     backButton.setFillColor(brown);
     backText.setFont(font);
     backText.setString("Back");
-    backText.setPosition(60.f, 510.f);
+    backText.setPosition(100.f, 740.f);
     
     // Next Button
-    nextButton.setSize(sf::Vector2f(100.f, 50.f));
-    nextButton.setPosition(650.f, 500.f);
+    nextButton.setSize(sf::Vector2f(200.f, 50.f));
+    nextButton.setPosition(860.f, 730.f);
     nextButton.setFillColor(brown);
     nextText.setFont(font);
     nextText.setString("Next");
-    nextText.setPosition(660.f, 510.f);
+    nextText.setPosition(930.f, 740.f);
 
     // Labels and Inputs
     player1Label.setFont(font);
@@ -50,17 +51,17 @@ void Settings::settingScreen() {
     player2Label.setFont(font);
     player2Label.setString("Player 2 Name:");
     player2Label.setFillColor(brown);
-    player2Label.setPosition(50.f, 150.f);
+    player2Label.setPosition(50.f, 200.f);
 
     themeLabel.setFont(font);
     themeLabel.setString("Board Theme:");
     themeLabel.setFillColor(brown);
-    themeLabel.setPosition(50.f, 250.f);
+    themeLabel.setPosition(50.f, 350.f);
 
     timerLabel.setFont(font);
     timerLabel.setString("Timer:");
     timerLabel.setFillColor(brown);
-    timerLabel.setPosition(50.f, 350.f);
+    timerLabel.setPosition(50.f, 550.f);
 
     // Player 1 Input
     player1Input.setFont(font);
@@ -69,12 +70,12 @@ void Settings::settingScreen() {
 
     // Player 2 Input
     player2Input.setFont(font);
-    player2Input.setPosition(300.f, 152.f);
+    player2Input.setPosition(300.f, 202.f);
     player2Input.setString(player2Name);
 
     // Theme Dropdown
     themeDropdown.setFont(font);
-    themeDropdown.setPosition(300.f, 252.f);
+    themeDropdown.setPosition(300.f, 352.f);
     themeDropdown.addItem("Classic");
     themeDropdown.addItem("Pakistan");
     themeDropdown.addItem("Habib University");
@@ -83,26 +84,28 @@ void Settings::settingScreen() {
     // Timer Inputs
     timerMins.setFont(font);
     timerMins.box.setSize(sf::Vector2f(80.f, 30.f));
-    timerMins.setPosition(300.f, 352.f);
+    timerMins.setPosition(300.f, 552.f);
     for (int i = 5; i < 60; i+=5) {
         timerMins.addItem(to_string(i));
     }
 
     timerSecs.setFont(font);
     timerSecs.box.setSize(sf::Vector2f(80.f, 30.f));
-    timerSecs.setPosition(500.f, 352.f);
+    timerSecs.setPosition(500.f, 552.f);
     for (int i = 0; i < 60; i+=5) {
         timerSecs.addItem(to_string(i));
     }
 
     minsLabel.setFont(font);
     secsLabel.setFont(font);
+    minsLabel.setFillColor(brown);
+    secsLabel.setFillColor(brown);
     minsLabel.setCharacterSize(20);
     secsLabel.setCharacterSize(20);
     minsLabel.setString(" minutes");
     secsLabel.setString(" seconds");
-    minsLabel.setPosition(400.f, 352.f);
-    secsLabel.setPosition(600.f, 352.f);
+    minsLabel.setPosition(400.f, 552.f);
+    secsLabel.setPosition(600.f, 552.f);
 }
 
 void Settings::handleEvents(sf::RenderWindow& window) {
@@ -113,7 +116,6 @@ void Settings::handleEvents(sf::RenderWindow& window) {
         }
 
         if (event.type == sf::Event::MouseButtonPressed) {
-            if (event.mouseButton.button == sf::Mouse::Left) {
                 if (backButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
                     std::cout << "Going Back to Welcome Screen" << std::endl;
                     window.close();  // close current window
@@ -126,7 +128,7 @@ void Settings::handleEvents(sf::RenderWindow& window) {
                     saveSettings();
                     
                 }
-            }
+            
         }
 
         // Inputs
@@ -219,19 +221,19 @@ void Settings::saveSettings() {
     string theme = themeDropdown.getSelectedItem();
     sf::RenderWindow gameWindow(sf::VideoMode(1100, 800), "Game");
     if (theme == "Classic"){
-        Game chess(gameWindow, sf::Color(119,67,22), sf::Color(198,141,92) );
+        Game chess(gameWindow, sf::Color(119,67,22), sf::Color(198,141,92), player1Name, player2Name, timerLimit,theme);
         chess.display(gameWindow);
     }
     else if(theme == "Pakistan"){
-        Game chess(gameWindow, sf::Color(11, 175, 11), sf::Color(255, 255, 255) );
+        Game chess(gameWindow, sf::Color(11, 175, 11), sf::Color(255, 255, 255), player1Name, player2Name, timerLimit, theme);
         chess.display(gameWindow);
     }
     else if(theme == "Habib University"){
-        Game chess(gameWindow, sf::Color(98, 0, 128), sf::Color(252, 252, 152) );
+        Game chess(gameWindow, sf::Color(98, 0, 128), sf::Color(252, 252, 152), player1Name, player2Name, timerLimit,theme);
         chess.display(gameWindow);
     }
     else if(theme == "Ocean"){
-        Game chess(gameWindow, sf::Color(11, 136, 182), sf::Color(0, 0, 139) );
+        Game chess(gameWindow, sf::Color(11, 136, 182), sf::Color(0, 0, 139), player1Name, player2Name, timerLimit, theme);
         chess.display(gameWindow);
     }
     

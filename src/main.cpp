@@ -1,13 +1,20 @@
 #include <SFML/Graphics.hpp>
 #include "welcome.hpp"
-#include "settings.hpp"
-#include "board.hpp"
+// #include "gameOverScreen.hpp"
+// #include "settings.hpp"
+// #include "board.hpp"
 #include <iostream>
 
 int main() {
-    // Initialize Welcome screen
+    //Initialize Welcome screen
     Welcome welcome;
     welcome.display();  // Show Welcome screen
+
+    // std::string name = "maira";
+
+    // sf::RenderWindow window(sf::VideoMode(1100,800), "testerrrr");
+    // GameOverScreen gameOverScreen(window, name);
+    // gameOverScreen.displayWinner();
 
 
     // sf::RenderWindow window(sf::VideoMode(800, 600), "Settings");

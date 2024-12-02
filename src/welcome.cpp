@@ -30,13 +30,11 @@ void Welcome::display() {
             }
 
             if (event.type == sf::Event::MouseButtonPressed) {
-                if (event.mouseButton.button == sf::Mouse::Left) {
                     if (startButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
                         cout << "working" << endl;
                         window.close();
                         gotoSettings();  
                     }
-                }
             }
         }
 

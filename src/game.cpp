@@ -3,41 +3,34 @@
 #include <SFML/Graphics.hpp>
 #include "game.hpp"
 
-Game::Game(sf::RenderWindow& window, sf::Color c1, sf::Color c2, const std::string& player1, const std::string& player2, int timerLimit): window(window),isOver(false), whiteTurn(true)
+Game::Game(sf::RenderWindow& window, sf::Color c1, sf::Color c2, const std::string& player1, const std::string& player2, int timerLimit, const std::string& theme)
+    : window(window),isOver(false), whiteTurn(true), 
+        player1Name(player1), player2Name(player2), timerLimit(timerLimit), 
+            player1Timer(timerLimit, sf::Vector2f(50.f, 20.f)),  player2Timer(timerLimit, sf::Vector2f(600.f, 20.f)), theme(theme)
 {
     gameOverScreen = nullptr; //doesnt exist at this point
 
     font.loadFromFile("fonts/english.ttf");
-    // restart button
-    infoRestart.setFillColor(sf::Color(92, 59, 39));
-    infoRestart.setOutlineThickness(-5.f);
-    infoRestart.setOutlineColor(sf::Color::Black);
-    infoRestart.setPosition(sf::Vector2f(850.f, 0.f));
-    infoRestart.setSize(sf::Vector2f(180.f, 60.f));
-    textRestart.setFont(font);
-    textRestart.setString("Restart");
-    textRestart.setCharacterSize(28);
-    textRestart.setFillColor(sf::Color::White);
-    textRestart.setPosition(infoRestart.getPosition().x + 35.f, infoRestart.getPosition().y + 13.f);
-
-
-    turn.setFont(font);
-    turn.setCharacterSize(30);
-    turn.setStyle(sf::Text::Regular);
-    turn.setFillColor(sf::Color::White);
-    turn.setPosition(880.f, 70.f);
+    // buttons
+    // turn.setFont(font);
+    // turn.setCharacterSize(30);
+    // turn.setStyle(sf::Text::Regular);
+    // turn.setFillColor(sf::Color::White);
+    // turn.setPosition(880.f, 70.f);
 
     chance.setFont(font);
     chance.setCharacterSize(30);
     chance.setStyle(sf::Text::Regular);
-    chance.setFillColor(sf::Color::White);
-    chance.setPosition(turn.getPosition().x, turn.getPosition().y + 50.f);
-    
-    situation.setFont(font);
-    situation.setCharacterSize(30);
-    situation.setStyle(sf::Text::Regular);
-    situation.setFillColor(sf::Color::White);
-    situation.setPosition(chance.getPosition().x, chance.getPosition().y + 50.f);
+    chance.setFillColor(sf::Color(92, 59, 39));
+    chance.setPosition(860, 400.f);
+
+    setPlayerInfo(player1,player2);
+
+    // situation.setFont(font);
+    // situation.setCharacterSize(30);
+    // situation.setStyle(sf::Text::Regular);
+    // situation.setFillColor(sf::Color::White);
+    // situation.setPosition(910, chance.getPosition().y + 50.f);
     //one each, initilaising
     w_king = new King(1);
     whitePieces.push_back(w_king);
@@ -85,7 +78,7 @@ Game::Game(sf::RenderWindow& window, sf::Color c1, sf::Color c2, const std::stri
 }
 
 void Game::display(sf::RenderWindow& window) {
-label: // Label for restarting
+// Label for restarting
     sf::Event e;
     while (window.isOpen()) {
         while (window.pollEvent(e)) {
@@ -93,7 +86,6 @@ label: // Label for restarting
                 window.close();
 
             if (e.type == sf::Event::MouseButtonPressed) {
-                if (e.mouseButton.button == sf::Mouse::Left) {
                     if (e.mouseButton.x >= 0 && e.mouseButton.x <= 800 && e.mouseButton.y >= 0 && e.mouseButton.y <= 800) {
                         int x = e.mouseButton.y / 100, y = e.mouseButton.x / 100;
                         if (!getSelected() && !isOver) {
@@ -102,23 +94,20 @@ label: // Label for restarting
                             moveSelected(cells, x, y);
                         }
                     }
-                    if (e.mouseButton.x >= 850 && e.mouseButton.x <= 1024 && e.mouseButton.y >= 5 && e.mouseButton.y <= 55) {
-                        goto label; // Restart the game logic by jumping to the label
-                    }
-                }
+                
             }
         }
 
         // Draw the game (Chess board, pieces, etc.)
         window.clear();
         window.draw(*this); // Assuming you're drawing the game from within the Game class
+        handleEvents(window);
         window.display();
     }
 }
 
 void Game::Start(sf::Color c1, sf::Color c2)
 {
-    number_of_moves = 0;
     isOver = false;
     gameStatus = true;
     whiteTurn = 1;
@@ -223,47 +212,89 @@ void Game::Start(sf::Color c1, sf::Color c2)
 
 void Game::SetRightSideofWindow()
 {
-    turn.setString("Moves: " + std::to_string(number_of_moves/2 + number_of_moves%2));
-    number_of_moves++;
     if(whiteTurn == 0 && !isOver)
         chance.setString("Black's Turn");
     else if(whiteTurn == 1 && !isOver)
         chance.setString("White's Turn");   
 }
 
-void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
+void Game::draw(sf::RenderTarget &window, sf::RenderStates states) const
 {
-    target.clear();
+    window.clear();
+
+    sf::Texture backgroundTexture;
+    if (!backgroundTexture.loadFromFile("images/bkgd.jpg")) {
+        std::cerr << "Error loading background image" << std::endl;
+    }
+    sf::Sprite background(backgroundTexture);
+    window.draw(background);
+
+
+    //buttons 
+    if (gameStatus) {
+        startButtonBg.setFillColor(sf::Color(0, 139, 0));  // Dark green when started
+    } else {
+        startButtonBg.setFillColor(sf::Color(139, 69, 19));  // Brown when not started
+    }
+
+    std::string p1TimeStr = formatTime(player1Timer.getTimeLeft());
+    std::string p2TimeStr = formatTime(player2Timer.getTimeLeft());
+    
+    player1Info.setString(player1Name + "\nTime: " + p1TimeStr);
+    player2Info.setString(player2Name + "\nTime: " + p2TimeStr);
+
+    // Check for time up
+    if (player1Timer.isTimeUp() || player2Timer.isTimeUp()) {
+        gameStatus = false;
+        std::string winner = player1Timer.isTimeUp() ? "Player 2" : "Player 1";
+        std::cout << "Time's up! " << winner << " wins!\n";
+    }
+
+    window.draw(player1Info);
+    window.draw(player2Info);
+
+    window.draw(startButtonBg);
+    window.draw(startButton);
+
+    window.draw(restartButtonBg);
+    window.draw(restartButton);
+    // window.draw(circle);
+    // window.draw(arrow);
+    
+    // Draw Quit button with background
+    window.draw(quitButtonBg);
+    window.draw(quitButton);
+
     for (int i = 0; i < 8; i++)
     {
         for (int j = 0; j < 8; j++)
         {
-            target.draw(cells[i][j].square);
+            window.draw(cells[i][j].square);
         }
     }
-    target.draw(infoRestart);
-    target.draw(textRestart);
-    target.draw(turn);
-    target.draw(situation);
+    // target.draw(infoRestart);
+    // target.draw(textRestart)
+    // target.draw(turn);
+    // target.draw(situation);
     if(isOver == false)
-        target.draw(chance);
+        window.draw(chance);
     for (int i = 0; i < moves.size(); i++)
     {
-        target.draw(moves[i].square);
+        window.draw(moves[i].square);
     }
 
     if ((selected_piece != NULL))
     {
         for (int i = 0; i < newmoves.size(); i++)
         {
-            target.draw(newmoves[i]);
+            window.draw(newmoves[i]);
         }
     }
     for (int i = 0; i < whitePieces.size(); i++)
     {
         if (whitePieces[i]->isAlive)
         {
-            target.draw(whitePieces[i]->piece);
+            window.draw(whitePieces[i]->piece);
         }
         // if(!whitePieces[i]->isAlive){
         //      if(!w_king->isAlive){
@@ -276,7 +307,7 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         if (blackPieces[i]->isAlive)
         {
-            target.draw(blackPieces[i]->piece);
+            window.draw(blackPieces[i]->piece);
         }
         // if(!blackPieces[i]->isAlive){
         //      if(!b_king->isAlive){
@@ -293,8 +324,15 @@ void Game::gameOver()
     bool whiteWon = (whiteTurn == 0);  // Check if white won based on the turn
     
     // Create GameOverScreen and display the winner message
-    gameOverScreen = new GameOverScreen(window);
-    gameOverScreen->displayWinner(whiteWon);
+    if(whiteWon){
+        gameOverScreen = new GameOverScreen(window, player1Name);
+        gameOverScreen->displayWinner();
+    }
+    else{
+        gameOverScreen = new GameOverScreen(window, player2Name);
+        gameOverScreen->displayWinner();
+    }
+    
     
     // Main loop to show the winner until the window is closed
     sf::Event event;
@@ -321,7 +359,7 @@ void Game::DrawPossibleMoves()
         sf::RectangleShape tmp;
         tmp.setPosition(sf::Vector2f((moves[i].y) * 100.f, (moves[i].x) * 100.f));
         tmp.setSize(sf::Vector2f(100.f, 100.f));
-        tmp.setFillColor(sf::Color(0x66b4cc50));
+        tmp.setFillColor(sf::Color(0xFFD70080));
         newmoves.push_back(tmp);
     }
     sf::RectangleShape tmp;
@@ -427,6 +465,7 @@ bool Game::SelectPiece(Square Cells[][8], int x, int y)
     DrawPossibleMoves();
     return true;
 }
+
 bool Game::getSelected()
 {
     return selected;
@@ -548,3 +587,191 @@ void Game::moveSelected(Square Cells[][8], int x, int y)
     selected_piece = NULL;
     selected = false;
 }
+
+void Game::setPlayerInfo(const std::string& player1, const std::string& player2) {
+    // Convert the timerLimit to hours, minutes, and seconds
+
+    // maira - adjusting the time bcs its only mins and secs, no hours 
+    /*int hours = timerLimit / 3600;
+    int minutes = (timerLimit % 3600) / 60;
+    int seconds = timerLimit % 60;
+
+    // Format the time as hh:mm:ss
+    std::string formattedTime = (hours < 10 ? "0" : "") + std::to_string(hours) + ":" +
+                                (minutes < 10 ? "0" : "") + std::to_string(minutes) + ":" +
+                                (seconds < 10 ? "0" : "") + std::to_string(seconds);
+    */
+    int minutes = timerLimit / 60;
+    int seconds = timerLimit % 60;
+
+    // Format the time as mm:ss
+    std::string formattedTime = (minutes < 10 ? "0" : "") + std::to_string(minutes) + ":" +
+                                (seconds < 10 ? "0" : "") + std::to_string(seconds);
+    // Display player 1 info
+    player1Info.setFont(font);
+    player1Info.setString(player1 + "\nTime Limit:\n" + formattedTime);
+    player1Info.setCharacterSize(30);
+    player1Info.setFillColor(sf::Color(92, 59, 39));
+    player1Info.setPosition(870.f, 100.f);
+
+    // Display player 2 info
+    player2Info.setFont(font);
+    player2Info.setString(player2 + "\nTime Limit:\n" + formattedTime);
+    player2Info.setCharacterSize(30);
+    player2Info.setFillColor(sf::Color(92, 59, 39));
+    player2Info.setPosition(870.f, 700.f);
+
+    // Setup Start button background
+    startButton.setFont(font);
+    startButton.setString("Start");
+    startButton.setCharacterSize(20);
+    startButton.setFillColor(sf::Color::White);
+    startButton.setPosition(910.f, 447.f);
+
+    // Setup Restart button
+    restartButton.setFont(font);
+    restartButton.setString("c>");
+    restartButton.setCharacterSize(30);
+    restartButton.setFillColor(sf::Color::White);
+    restartButton.setPosition(965.f, 25.f);
+
+    // Position offset
+    float offsetX = 800;
+    float offsetY = 200;
+
+   /* // //Create the circle
+    // sf::CircleShape circle(300);
+    // circle.setPointCount(300);
+    // circle.setFillColor(sf::Color::White);
+    // circle.setOutlineColor(sf::Color::Black);
+    // circle.setOutlineThickness(5.f);
+    // circle.setPosition(offsetX, offsetY);
+
+    // // Create the arrowhead
+    // sf::ConvexShape arrow;
+    // arrow.setPointCount(3);
+    // arrow.setPoint(0, sf::Vector2f(offsetX + 100, offsetY - 20)); // Tip of the arrow
+    // arrow.setPoint(1, sf::Vector2f(offsetX + 120, offsetY + 30)); // Bottom-right
+    // arrow.setPoint(2, sf::Vector2f(offsetX + 80, offsetY + 30));  // Bottom-left
+    // arrow.setFillColor(sf::Color::White);
+*/
+    
+    // Setup Quit button
+    quitButton.setFont(font);
+    quitButton.setString("X");
+    quitButton.setCharacterSize(30);
+    quitButton.setFillColor(sf::Color::White);
+    quitButton.setPosition(1055.f, 25.f);
+
+    //start background
+    startButtonBg.setSize(sf::Vector2f(120.f, 40.f)); // Width and height
+    startButtonBg.setFillColor(sf::Color(92, 59, 39)); // Brown color
+    startButtonBg.setPosition(880.f, 440.f); // Slightly offset from text
+
+    // Setup Restart button background
+    restartButtonBg.setSize(sf::Vector2f(50.f, 40.f)); // Width and height
+    restartButtonBg.setFillColor(sf::Color(92, 59, 39)); // Brown color
+    restartButtonBg.setPosition(950.f, 20.f); // Slightly offset from text
+
+    // Setup Quit button background
+    quitButtonBg.setSize(sf::Vector2f(50.f, 40.f)); // Width and height
+    quitButtonBg.setFillColor(sf::Color(92, 59, 39)); // Brown color
+    quitButtonBg.setPosition(1040.f, 20.f);
+}
+
+std::string Game::formatTime(float seconds) const {
+    int mins = static_cast<int>(seconds) / 60;
+    int secs = static_cast<int>(seconds) % 60;
+    return std::to_string(mins) + ":" + (secs < 10 ? "0" : "") + std::to_string(secs);
+}
+
+void Game::handleEvents(sf::RenderWindow& window){
+    sf::Event event;
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::MouseButtonPressed ) {
+            //sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            //std::cout << "\nMouse clicked at: (" << mousePos.x << ", " << mousePos.y << ")\n";
+
+            // Get button bounds for debugging
+            sf::FloatRect startBounds = startButtonBg.getGlobalBounds();
+            // std::cout << "Start button bounds: (" << startBounds.left << ", " << startBounds.top 
+            //           << ", " << startBounds.width << ", " << startBounds.height << ")\n";
+            sf::FloatRect restartBounds = restartButtonBg.getGlobalBounds();
+            // std::cout << "Restart button bounds: (" << restartBounds.left << ", " << restartBounds.top 
+            //           << ", " << restartBounds.width << ", " << restartBounds.height << ")\n";
+            sf::FloatRect quitBounds = quitButtonBg.getGlobalBounds();
+            
+            if (startBounds.contains(event.mouseButton.x, event.mouseButton.y)) {
+                std::cout << "Start button area clicked. Game started: " << (gameStatus ? "true" : "false") << "\n";
+                if (!gameStatus) {
+                    std::cout << "Starting game...\n";
+                    startGame();
+                    std::cout << "Game started: " << (gameStatus ? "true" : "false") << "\n";
+                }
+            }
+            else if (restartBounds.contains(event.mouseButton.x, event.mouseButton.y)) {
+                std::cout << "Restart button clicked\n";
+                window.close();
+                restartGame();
+            }
+            else if (quitBounds.contains(event.mouseButton.x, event.mouseButton.y)) {
+                std::cout << "Quit button clicked\n";
+                window.close();
+            }
+            // else if (gameStatus) {
+            //     std::cout << "Handling piece selection\n";
+            //     handlePieceSelection(event.mouseButton.x, event.mouseButton.y);  
+            // }
+        }
+        else if (event.type == sf::Event::Closed) {
+            window.close();
+        }
+    }
+}
+
+void Game::startGame() {
+    std::cout << "startGame() called. Current state: " << (gameStatus ? "true" : "false") << "\n";
+    if (!gameStatus) {
+        gameStatus = true;
+        whiteTurn = true;
+        
+        // Reset and initialize timers
+        player1Timer.reset();
+        player2Timer.reset();
+        player1Timer.start();  // Start white's timer
+        player2Timer.stop();   // Keep black's timer stopped initially
+        
+        std::cout << "Game started! White's turn\n";
+        std::cout << "New game state: " << (gameStatus ? "true" : "false") << "\n";
+    }
+}
+
+void Game::restartGame() {
+    // gameStatus = false;
+    // whiteTurn = true;
+    // setPlayerInfo(player1Name, player2Name);
+
+    // Reset timers
+    player1Timer.reset();
+    player2Timer.reset();
+
+    sf::RenderWindow gameWindow(sf::VideoMode(1100, 800), "Game");
+    if (theme == "Classic"){
+        Game chess(gameWindow, sf::Color(119,67,22), sf::Color(198,141,92), player1Name, player2Name, timerLimit,theme);
+        chess.display(gameWindow);
+    }
+    else if(theme == "Pakistan"){
+        Game chess(gameWindow, sf::Color(11, 175, 11), sf::Color(255, 255, 255), player1Name, player2Name, timerLimit, theme);
+        chess.display(gameWindow);
+    }
+    else if(theme == "Habib University"){
+        Game chess(gameWindow, sf::Color(98, 0, 128), sf::Color(252, 252, 152), player1Name, player2Name, timerLimit,theme);
+        chess.display(gameWindow);
+    }
+    else if(theme == "Ocean"){
+        Game chess(gameWindow, sf::Color(11, 136, 182), sf::Color(0, 0, 139), player1Name, player2Name, timerLimit, theme);
+        chess.display(gameWindow);
+    }
+    
+}
+

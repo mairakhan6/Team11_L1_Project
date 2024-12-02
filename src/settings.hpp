@@ -9,7 +9,7 @@
 #include "welcome.hpp"
 #include "inputBox.hpp"
 #include "dropdown.hpp"
-#include "game.hpp"
+// #include "game.hpp"
 
 class Settings {
 public:
