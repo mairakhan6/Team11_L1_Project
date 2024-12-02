@@ -38,7 +38,7 @@ private:
     void restartGame();
     void initializePieces();
     void loadPieceTextures();
-    void handlePieceSelection(const sf::Vector2i& mousePos);
+    void handlePieceSelection(int mouseX, int mouseY);
     bool isValidMove(Piece* piece, int x, int y) const;
 
      // Helper methods

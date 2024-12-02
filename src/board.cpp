@@ -56,23 +56,13 @@ void Board::loadResources() {
 }
 
 void Board::setupBoardPosition() {
-    float windowWidth = 800.f;
-    float windowHeight = 600.f;
-    float boardSize = std::min(windowWidth, windowHeight) * 0.8f; // Board takes 80% of the smaller window dimension
-    float leftMargin = (windowWidth - boardSize) / 2;
-    float topMargin = (windowHeight - boardSize) / 2;
-    
+    sf::Vector2u textureSize = backgroundTexture.getSize();
+    float boardSize = 600.f;
     boardShape.setSize(sf::Vector2f(boardSize, boardSize));
-    boardShape.setPosition(leftMargin, topMargin);
+    boardShape.setPosition(0.f, (textureSize.y - boardSize) / 2.f);
     
     // Set the board properties for pieces
     Piece::setBoardProperties(boardShape.getPosition(), boardSize / 8);
-    
-    // Scale and position the background
-    float scaleX = windowWidth / backgroundTexture.getSize().x;
-    float scaleY = windowHeight / backgroundTexture.getSize().y;
-    backgroundSprite.setScale(scaleX, scaleY);
-    backgroundSprite.setPosition(0, 0);
 
     // Initialize selection highlight
     selectedSquare.setSize(sf::Vector2f(boardSize / 8, boardSize / 8));
@@ -83,8 +73,8 @@ void Board::setupBoardPosition() {
 
 void Board::setTheme(const std::string& theme) {
     if (theme == "Classic") {
-        lightColor = sf::Color::White;
-        darkColor = sf::Color::Black;
+        lightColor = sf::Color(119,67,22);
+        darkColor = sf::Color(198,141,92);
     }
     else if (theme == "Pakistan") {
         lightColor = sf::Color(11, 175, 11); 
@@ -198,8 +188,8 @@ void Board::drawBoard(sf::RenderWindow& window) {
 
     // Draw pieces
     for (std::vector<Piece>::const_iterator it = pieces.begin(); it != pieces.end(); ++it) {
-    it->draw(window);
-}
+        it->draw(window);
+    }
 
     // Draw selection highlight if a piece is selected
     if (isPieceSelected && selectedPiece != nullptr) {
@@ -216,15 +206,15 @@ void Board::drawBoard(sf::RenderWindow& window) {
     }
     
     // Update and draw timers if game is started
-    if (gameStarted) {
+    // if (gameStarted || !gameStarted) {
         // Set color based on whose turn it is
-        if (isWhiteTurn) {
-            player1Info.setFillColor(sf::Color::Green);  // Active player
-            player2Info.setFillColor(sf::Color(139, 69, 19));  // Inactive player
-        } else {
-            player1Info.setFillColor(sf::Color(139, 69, 19));  // Inactive player
-            player2Info.setFillColor(sf::Color::Green);  // Active player
-        }
+        // if (!isWhiteTurn) {
+        //     player1Info.setFillColor(sf::Color::Green);  // Active player
+        //     player2Info.setFillColor(sf::Color(139, 69, 19));  // Inactive player
+        // } else {
+        //     player1Info.setFillColor(sf::Color(139, 69, 19));  // Inactive player
+        //     player2Info.setFillColor(sf::Color::Green);  // Active player
+        // }
         
         // Update player info text with time
         std::string p1TimeStr = formatTime(player1Timer.getTimeLeft());
@@ -239,10 +229,7 @@ void Board::drawBoard(sf::RenderWindow& window) {
             std::string winner = player1Timer.isTimeUp() ? "Player 2" : "Player 1";
             std::cout << "Time's up! " << winner << " wins!\n";
         }
-    } else {
-        player1Info.setString(player1Name);
-        player2Info.setString(player2Name);
-    }
+    // } 
 
     window.draw(player1Info);
     window.draw(player2Info);
@@ -267,18 +254,19 @@ void Board::eventHandle(sf::RenderWindow& window) {
     sf::Event event;
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-            sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);
-            std::cout << "\nMouse clicked at: (" << mousePos.x << ", " << mousePos.y << ")\n";
-            
+            //sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            //std::cout << "\nMouse clicked at: (" << mousePos.x << ", " << mousePos.y << ")\n";
+
             // Get button bounds for debugging
             sf::FloatRect startBounds = startButtonBg.getGlobalBounds();
+            // std::cout << "Start button bounds: (" << startBounds.left << ", " << startBounds.top 
+            //           << ", " << startBounds.width << ", " << startBounds.height << ")\n";
             sf::FloatRect restartBounds = restartButtonBg.getGlobalBounds();
+            // std::cout << "Restart button bounds: (" << restartBounds.left << ", " << restartBounds.top 
+            //           << ", " << restartBounds.width << ", " << restartBounds.height << ")\n";
             sf::FloatRect quitBounds = quitButtonBg.getGlobalBounds();
             
-            std::cout << "Start button bounds: (" << startBounds.left << ", " << startBounds.top 
-                     << ", " << startBounds.width << ", " << startBounds.height << ")\n";
-            
-            if (startButtonBg.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+            if (startBounds.contains(event.mouseButton.x, event.mouseButton.y)) {
                 std::cout << "Start button area clicked. Game started: " << (gameStarted ? "true" : "false") << "\n";
                 if (!gameStarted) {
                     std::cout << "Starting game...\n";
@@ -286,16 +274,17 @@ void Board::eventHandle(sf::RenderWindow& window) {
                     std::cout << "Game started: " << (gameStarted ? "true" : "false") << "\n";
                 }
             }
-            else if (restartButtonBg.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+            else if (restartBounds.contains(event.mouseButton.x, event.mouseButton.y)) {
                 std::cout << "Restart button clicked\n";
                 restartGame();
             }
-            else if (quitButtonBg.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+            else if (quitBounds.contains(event.mouseButton.x, event.mouseButton.y)) {
                 std::cout << "Quit button clicked\n";
                 window.close();
             }
             else if (gameStarted) {
-                handlePieceSelection(mousePos);  
+                std::cout << "Handling piece selection\n";
+                handlePieceSelection(event.mouseButton.x, event.mouseButton.y);  
             }
         }
         else if (event.type == sf::Event::Closed) {
@@ -433,11 +422,13 @@ bool Board::isValidBoardPosition(int x, int y) const {
     return x >= 0 && x < 8 && y >= 0 && y < 8;
 }
 
-void Board::handlePieceSelection(const sf::Vector2i& mousePos) {
+void Board::handlePieceSelection(int mouseX, int mouseY) {
     if (!gameStarted) return;  // Don't handle moves if game hasn't started
 
-    sf::Vector2i boardPos = screenToBoardPosition(mousePos.x, mousePos.y);
+    // Convert screen coordinates to board coordinates
+    sf::Vector2i boardPos = screenToBoardPosition(mouseX, mouseY);
     
+    // Check if the board position is valid
     if (!isValidBoardPosition(boardPos.x, boardPos.y)) {
         return;
     }

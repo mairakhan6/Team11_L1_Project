@@ -3,7 +3,7 @@
 using namespace std;
 
 void Welcome::display() {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "CHESS GAME");
+    sf::RenderWindow window(sf::VideoMode(1100, 800), "CHESS GAME");
 
     sf::Texture backgroundTexture;
     if (!backgroundTexture.loadFromFile("images/welcome.jpg")) {
@@ -18,9 +18,9 @@ void Welcome::display() {
 
     sf::RectangleShape startButton(sf::Vector2f(200.f, 50.f));
     startButton.setFillColor(sf::Color(92, 59, 39));
-    startButton.setPosition(300.f, 300.f);
+    startButton.setPosition(450.f, 450.f);
     sf::Text startButtonText("Start", font, 25);
-    startButtonText.setPosition(365.f, 310.f);
+    startButtonText.setPosition(515.f, 460.f);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -49,7 +49,7 @@ void Welcome::display() {
 }
 
 void Welcome::gotoSettings() {
-    sf::RenderWindow settingsWindow(sf::VideoMode(800, 600), "Settings");
+    sf::RenderWindow settingsWindow(sf::VideoMode(1100, 800), "Settings");
 
     Settings settings;
     while (settingsWindow.isOpen()) {
@@ -57,12 +57,12 @@ void Welcome::gotoSettings() {
     }
 
     
-    Board* configuredBoard = settings.getBoard();
-    if (configuredBoard) {
-        gotoBoard(configuredBoard);  
-    } else {
-        std::cerr << "Error: No board configured!" << std::endl;
-    }
+    // Board* configuredBoard = settings.getBoard();
+    // if (configuredBoard) {
+    //     gotoBoard(configuredBoard);  
+    // } else {
+    //     std::cerr << "Error: No board configured!" << std::endl;
+    // }
 }
 
 void Welcome::gotoBoard(Board* board) {

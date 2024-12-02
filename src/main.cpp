@@ -10,36 +10,36 @@ int main() {
     welcome.display();  // Show Welcome screen
 
 
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Settings");
+    // sf::RenderWindow window(sf::VideoMode(800, 600), "Settings");
 
-    // Initialize settings
-    Settings settings;
-    while (window.isOpen()) {
-        settings.display(window);  
-    }
+    // // Initialize settings
+    // Settings settings;
+    // while (window.isOpen()) {
+    //     settings.display(window);  
+    // }
 
     
-    Board* board = settings.getBoard();  
-    if (board != nullptr) {
-        sf::RenderWindow boardWindow(sf::VideoMode(800, 600), "Game Board");
-        while (boardWindow.isOpen()) {
-            sf::Event event;
-            while (boardWindow.pollEvent(event)) {
-                if (event.type == sf::Event::Closed) {
-                    boardWindow.close();
-                }
+    // Board* board = settings.getBoard();  
+    // if (board != nullptr) {
+    //     sf::RenderWindow boardWindow(sf::VideoMode(800, 600), "Game Board");
+    //     while (boardWindow.isOpen()) {
+    //         sf::Event event;
+    //         while (boardWindow.pollEvent(event)) {
+    //             if (event.type == sf::Event::Closed) {
+    //                 boardWindow.close();
+    //             }
 
-                // Handle button clicks
-                board->eventHandle(boardWindow);  
-            }
+    //             // Handle button clicks
+    //             board->eventHandle(boardWindow);  
+    //         }
 
-            boardWindow.clear();
-            board->drawBoard(boardWindow);  // Draw the game board
-            boardWindow.display();
-        }
-    } else {
-        std::cerr << "Error: Board not configured properly!" << std::endl;
-    }
+    //         boardWindow.clear();
+    //         board->drawBoard(boardWindow);  // Draw the game board
+    //         boardWindow.display();
+    //     }
+    // } else {
+    //     std::cerr << "Error: Board not configured properly!" << std::endl;
+    // }
 
     return 0;
 }

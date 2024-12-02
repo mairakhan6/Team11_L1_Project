@@ -122,8 +122,9 @@ void Settings::handleEvents(sf::RenderWindow& window) {
 
                 if (nextButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
                     std::cout << "Next button pressed. Saving player names and settings." << std::endl;
-                    saveSettings();
                     window.close();
+                    saveSettings();
+                    
                 }
             }
         }
@@ -199,7 +200,7 @@ void Settings::display(sf::RenderWindow& window) {
 }
 
 void Settings::openWelcome() {
-    sf::RenderWindow welcomeWindow(sf::VideoMode(800, 600), "Welcome");
+    // sf::RenderWindow welcomeWindow(sf::VideoMode(1100, 800), "Welcome");
     Welcome welcome;
     welcome.display();  // Go back to Welcome screen
 }
@@ -214,4 +215,24 @@ void Settings::saveSettings() {
 
     // Create a new Board with the selected theme and other settings
     board = new Board(themeDropdown.getSelectedItem(), player1Name, player2Name, timerLimit);
+
+    string theme = themeDropdown.getSelectedItem();
+    sf::RenderWindow gameWindow(sf::VideoMode(1100, 800), "Game");
+    if (theme == "Classic"){
+        Game chess(gameWindow, sf::Color(119,67,22), sf::Color(198,141,92) );
+        chess.display(gameWindow);
+    }
+    else if(theme == "Pakistan"){
+        Game chess(gameWindow, sf::Color(11, 175, 11), sf::Color(255, 255, 255) );
+        chess.display(gameWindow);
+    }
+    else if(theme == "Habib University"){
+        Game chess(gameWindow, sf::Color(98, 0, 128), sf::Color(252, 252, 152) );
+        chess.display(gameWindow);
+    }
+    else if(theme == "Ocean"){
+        Game chess(gameWindow, sf::Color(11, 136, 182), sf::Color(0, 0, 139) );
+        chess.display(gameWindow);
+    }
+    
 }
