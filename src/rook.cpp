@@ -3,7 +3,7 @@
 #include <vector>
 #include "rook.hpp"
 using namespace std;
-
+//maira
 Rook::Rook(int color)
 {
     isWhite = color;

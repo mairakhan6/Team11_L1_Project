@@ -2,7 +2,7 @@
 #include "game.hpp"
 #include <iostream>
 using namespace std;
-//maira
+//maira + laiba
 Settings::Settings() :
     player1Name(""), 
     player2Name(""), 

@@ -2,7 +2,7 @@
 #include <vector>
 #include "king.hpp"
 using namespace std;
-
+//maira
 King::King(int color)
 {
     isWhite = color;

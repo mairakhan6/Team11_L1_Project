@@ -4,7 +4,7 @@
 #include <vector>
 #include "square.hpp"
 #include "pieces.hpp"
-
+//maira
 class King : public Pieces
 {
 public:

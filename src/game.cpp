@@ -5,7 +5,7 @@
 
 
 //laiba - board screen with the board grid playerinfo and time(not the pieces)
-
+//maira whole logic - movement, move validation, gameStatus, turn checker, pieces set up/display
 Game::Game(sf::RenderWindow& window, sf::Color c1, sf::Color c2, const std::string& player1, const std::string& player2, int timerLimit, const std::string& theme)
     : window(window),isOver(false), whiteTurn(true), 
         player1Name(player1), player2Name(player2), timerLimit(timerLimit), 
@@ -83,7 +83,7 @@ Game::Game(sf::RenderWindow& window, sf::Color c1, sf::Color c2, const std::stri
 
     Start(c1, c2);
 }
-
+//maira
 void Game::display(sf::RenderWindow& window) {
 // Label for restarting
     sf::Event e;
@@ -112,7 +112,7 @@ void Game::display(sf::RenderWindow& window) {
         window.display();
     }
 }
-
+//maira +laiba
 void Game::Start(sf::Color c1, sf::Color c2)
 {
     isOver = false;
@@ -219,7 +219,7 @@ void Game::Start(sf::Color c1, sf::Color c2)
     cells[0][4].occupied_value = 3; // setting up king
     SetRightSideofWindow();
 }
-
+//maira
 void Game::SetRightSideofWindow()
 {
     if(whiteTurn == 0 && !isOver)
@@ -227,7 +227,7 @@ void Game::SetRightSideofWindow()
     else if(whiteTurn == 1 && !isOver)
         chance.setString("White's Turn");   
 }
-
+//maira
 void Game::draw(sf::RenderTarget &window, sf::RenderStates states) const
 {
 
@@ -332,7 +332,7 @@ void Game::draw(sf::RenderTarget &window, sf::RenderStates states) const
         // }
     }
 }
-
+//maira
 void Game::gameOver()
 {
     isOver = true;
@@ -361,7 +361,7 @@ void Game::gameOver()
         gameOverScreen->draw();  // Draw the winner screen
     }
 }
-
+//maira
 void Game::DrawPossibleMoves()
 {
     if (selected_piece == NULL)
@@ -385,7 +385,7 @@ void Game::DrawPossibleMoves()
     tmp.setOutlineThickness(-3.f);
     newmoves.push_back(tmp);
 }
-
+//maira
 bool Game::SelectPiece(Square Cells[][8], int x, int y)
 {
     if (Cells[x][y].occupied_color == 0)
@@ -480,12 +480,12 @@ bool Game::SelectPiece(Square Cells[][8], int x, int y)
     DrawPossibleMoves();
     return true;
 }
-
+//maira
 bool Game::getSelected()
 {
     return selected;
 }
-
+//maira
 void Game::moveSelected(Square Cells[][8], int x, int y)
 {
     if (selected_piece == NULL)
@@ -602,7 +602,7 @@ void Game::moveSelected(Square Cells[][8], int x, int y)
     selected_piece = NULL;
     selected = false;
 }
-
+//maira + laiba
 void Game::setPlayerInfo(const std::string& player1, const std::string& player2) {
     // Convert the timerLimit to hours, minutes, and seconds
 
@@ -696,7 +696,7 @@ void Game::setPlayerInfo(const std::string& player1, const std::string& player2)
     quitButtonBg.setFillColor(sf::Color(92, 59, 39)); // Brown color
     quitButtonBg.setPosition(1040.f, 20.f);
 }
-
+//laiba
 std::string Game::formatTime(float seconds) const {
     int mins = static_cast<int>(seconds) / 60;
     int secs = static_cast<int>(seconds) % 60;
@@ -772,7 +772,8 @@ void Game::restartGame() {
     // Reset timers
     player1Timer.reset();
     player2Timer.reset();
-
+    
+    //maira
     sf::RenderWindow gameWindow(sf::VideoMode(1100, 800), "Game");
     if (theme == "Classic"){
         Game chess(gameWindow, sf::Color(119,67,22), sf::Color(198,141,92), player1Name, player2Name, timerLimit,theme);

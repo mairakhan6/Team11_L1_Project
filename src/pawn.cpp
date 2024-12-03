@@ -1,6 +1,6 @@
 #include <iostream>
 #include "pawn.hpp"
-
+//maira
 Pawn::Pawn(int color)
 {
     isWhite = color;

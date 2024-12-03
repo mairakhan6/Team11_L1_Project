@@ -2,7 +2,7 @@
 #include <vector>
 #include "knight.hpp"
 using namespace std;
-
+//maira
 Knight::Knight(int color)
 {
     isWhite = color;

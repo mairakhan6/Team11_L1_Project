@@ -5,7 +5,7 @@
 #include <vector>
 #include "pieces.hpp"
 using namespace std;
-
+//maira
 class Bishop : public Pieces
 {
 public:

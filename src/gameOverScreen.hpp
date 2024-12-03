@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "settings.hpp"
-
+//maira
 class GameOverScreen {
 public:
     GameOverScreen(sf::RenderWindow& window, std::string& winner);  // Constructor that takes a window for rendering

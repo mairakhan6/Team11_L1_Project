@@ -1,5 +1,5 @@
 #include "inputBox.hpp"
-
+//maira
 InputBox::InputBox() : focused(false) {
     box.setSize(sf::Vector2f(200.f, 30.f));
     box.setFillColor(sf::Color::White);

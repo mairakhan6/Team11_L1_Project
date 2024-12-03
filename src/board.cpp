@@ -2,8 +2,7 @@
 #include <iostream>
 
 //LAIBA - board
-// HOORAIN - pieces
-// MAIRA - game logic and timer
+// MAIRA - game logic 
 
 
 Board::Board(const std::string& theme, const std::string& player1, const std::string& player2, int timerLimit) 

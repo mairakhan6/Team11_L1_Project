@@ -1,5 +1,5 @@
 #include "player.hpp"
-
+//laiba
 Player::Player() {
     name = "";
     isWhite = false;

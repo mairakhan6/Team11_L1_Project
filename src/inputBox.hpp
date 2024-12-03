@@ -1,6 +1,6 @@
 #ifndef INPUTBOX_HPP
 #define INPUTBOX_HPP  
-
+//maira
 #include <SFML/Graphics.hpp>
 #include <string>
 using namespace std;

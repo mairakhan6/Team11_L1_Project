@@ -1,6 +1,6 @@
 #include "gameOverScreen.hpp"
 #include <iostream>
-
+//maira
 GameOverScreen::GameOverScreen(sf::RenderWindow& window, std::string& winner) : window(window), winner(winner) {
     if (!font.loadFromFile("fonts/english.ttf")) {  // Load a font (adjust path)
         // Handle error if font is not loaded

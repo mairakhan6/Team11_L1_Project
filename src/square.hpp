@@ -1,7 +1,7 @@
 #ifndef SQUARE_HPP
 #define SQUARE_HPP
 #include <SFML/Graphics.hpp>
-
+//maira
 class Square
 {
 public:

@@ -6,7 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include "square.hpp"
 using namespace std;
-
+//maira
 class Pieces
 {
 public:

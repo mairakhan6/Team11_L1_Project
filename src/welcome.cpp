@@ -1,7 +1,7 @@
 #include "welcome.hpp"
 #include <iostream>
 using namespace std;
-
+//maira +laiba
 void Welcome::display() {
     sf::RenderWindow window(sf::VideoMode(1100, 800), "CHESS GAME");
 

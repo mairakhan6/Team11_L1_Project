@@ -3,7 +3,7 @@
 #include "bishop.hpp"
 #include "game.hpp"
 using namespace std;
-
+//maira
 Bishop::Bishop(int color)
 {
     isWhite = color;

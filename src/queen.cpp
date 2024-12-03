@@ -1,7 +1,7 @@
 #include <iostream>
 #include "game.hpp"
 #include "queen.hpp"
-
+//maira
 Queen::Queen(int color)
 {
     isWhite = color;
