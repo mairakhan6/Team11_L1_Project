@@ -1,6 +1,6 @@
 # Team 11
-# Section L1
-# Maira, Laiba, Hoorain
+Section L1
+Maira, Laiba, Hoorain
 
 
 For our Object Oriented Programming Project in C++, we have made a chess game.
