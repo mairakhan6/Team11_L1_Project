@@ -630,14 +630,14 @@ void Game::setPlayerInfo(const std::string& player1, const std::string& player2)
     player1Info.setString(player1 + "\nTime Limit:\n" + formattedTime);
     player1Info.setCharacterSize(30);
     player1Info.setFillColor(sf::Color(92, 59, 39));
-    player1Info.setPosition(870.f, 100.f);
+    player1Info.setPosition(870.f, 600.f);
 
     // Display player 2 info
     player2Info.setFont(font);
     player2Info.setString(player2 + "\nTime Limit:\n" + formattedTime);
     player2Info.setCharacterSize(30);
     player2Info.setFillColor(sf::Color(92, 59, 39));
-    player2Info.setPosition(870.f, 700.f);
+    player2Info.setPosition(870.f, 100.f);
 
     // Setup Start button background
     startButton.setFont(font);
