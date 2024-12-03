@@ -15,7 +15,7 @@ Board::Board(const std::string& theme, const std::string& player1, const std::st
 {
     // Initialize selected square
     selectedSquare.setSize(sf::Vector2f(75.f, 75.f));  // Size of a board square
-    selectedSquare.setFillColor(sf::Color(255, 255, 0, 128));  // Semi-transparent yellow
+    selectedSquare.setFillColor(sf::Color(255, 255, 0, 128));  
     
     setTheme(theme);
     loadResources();
@@ -34,7 +34,7 @@ Board::Board()
 {
     // Initialize selected square
     selectedSquare.setSize(sf::Vector2f(75.f, 75.f));  // Size of a board square
-    selectedSquare.setFillColor(sf::Color(255, 255, 0, 128));  // Semi-transparent yellow
+    selectedSquare.setFillColor(sf::Color(255, 255, 0, 128));  
     
     loadResources();
     loadPieceTextures();
@@ -64,9 +64,9 @@ void Board::setupBoardPosition() {
     // Set the board properties for pieces
     Piece::setBoardProperties(boardShape.getPosition(), boardSize / 8);
 
-    // Initialize selection highlight
+    
     selectedSquare.setSize(sf::Vector2f(boardSize / 8, boardSize / 8));
-    selectedSquare.setFillColor(sf::Color(255, 255, 0, 128));  // Semi-transparent yellow
+    selectedSquare.setFillColor(sf::Color(255, 255, 0, 128));  
     selectedSquare.setOutlineColor(sf::Color::Yellow);
     selectedSquare.setOutlineThickness(2.f);
 }

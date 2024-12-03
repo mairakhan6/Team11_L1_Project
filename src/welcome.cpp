@@ -64,6 +64,8 @@ void Welcome::gotoSettings() {
 }
 
 void Welcome::gotoBoard(Board* board) {
+
+    //laiba-
     sf::RenderWindow boardWindow(sf::VideoMode(800, 600), "Game Board");
 
     while (boardWindow.isOpen()) {

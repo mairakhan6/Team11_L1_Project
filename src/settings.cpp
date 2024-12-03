@@ -216,6 +216,8 @@ void Settings::saveSettings() {
     timerLimit = (stoi(minsStr) * 60) + stoi(secsStr);
 
     // Create a new Board with the selected theme and other settings
+
+    //laiba-
     board = new Board(themeDropdown.getSelectedItem(), player1Name, player2Name, timerLimit);
 
     string theme = themeDropdown.getSelectedItem();

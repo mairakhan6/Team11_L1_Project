@@ -3,12 +3,17 @@
 #include <SFML/Graphics.hpp>
 #include "game.hpp"
 
+
+//laiba - board screen with the board grid playerinfo and time(not the pieces)
+
 Game::Game(sf::RenderWindow& window, sf::Color c1, sf::Color c2, const std::string& player1, const std::string& player2, int timerLimit, const std::string& theme)
     : window(window),isOver(false), whiteTurn(true), 
         player1Name(player1), player2Name(player2), timerLimit(timerLimit), 
             player1Timer(timerLimit, sf::Vector2f(50.f, 20.f)),  player2Timer(timerLimit, sf::Vector2f(600.f, 20.f)), theme(theme)
 {
     gameOverScreen = nullptr; //doesnt exist at this point
+
+
 
     font.loadFromFile("fonts/english.ttf");
     // buttons
@@ -18,6 +23,8 @@ Game::Game(sf::RenderWindow& window, sf::Color c1, sf::Color c2, const std::stri
     // turn.setFillColor(sf::Color::White);
     // turn.setPosition(880.f, 70.f);
 
+
+    //laiba
     chance.setFont(font);
     chance.setCharacterSize(30);
     chance.setStyle(sf::Text::Regular);
@@ -191,6 +198,9 @@ void Game::Start(sf::Color c1, sf::Color c2)
         cells[1][j].occupied_value = -3;
         cells[6][j].occupied_value = -3;
     }
+
+
+
     cells[0][0].occupied_value = 1;
     cells[7][7].occupied_value = 1;
     cells[7][0].occupied_value = 1;
@@ -220,6 +230,8 @@ void Game::SetRightSideofWindow()
 
 void Game::draw(sf::RenderTarget &window, sf::RenderStates states) const
 {
+
+
     window.clear();
 
     sf::Texture backgroundTexture;
@@ -249,6 +261,9 @@ void Game::draw(sf::RenderTarget &window, sf::RenderStates states) const
         std::string winner = player1Timer.isTimeUp() ? "Player 2" : "Player 1";
         std::cout << "Time's up! " << winner << " wins!\n";
     }
+
+
+    //laiba-
 
     window.draw(player1Info);
     window.draw(player2Info);
@@ -601,6 +616,9 @@ void Game::setPlayerInfo(const std::string& player1, const std::string& player2)
                                 (minutes < 10 ? "0" : "") + std::to_string(minutes) + ":" +
                                 (seconds < 10 ? "0" : "") + std::to_string(seconds);
     */
+
+
+   //laiba-
     int minutes = timerLimit / 60;
     int seconds = timerLimit % 60;
 
