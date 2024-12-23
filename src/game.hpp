@@ -84,7 +84,7 @@ private:
     mutable sf::RectangleShape restartButtonBg;
     mutable sf::RectangleShape quitButtonBg;
 
-    mutable std::string formatTime(float seconds) const;
+    std::string formatTime(float seconds) const;
     void restartGame();
 };
 
