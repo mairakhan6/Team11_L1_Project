@@ -116,7 +116,7 @@ void Game::display(sf::RenderWindow& window) {
 void Game::Start(sf::Color c1, sf::Color c2)
 {
     isOver = false;
-    gameStatus = true;
+    gameStatus = false;
     whiteTurn = 1;
     selected = false;
     selected_piece = NULL;
@@ -241,7 +241,7 @@ void Game::draw(sf::RenderTarget &window, sf::RenderStates states) const
     sf::Sprite background(backgroundTexture);
     window.draw(background);
 
-
+    //Hoorain
     //buttons 
     if (gameStatus) {
         startButtonBg.setFillColor(sf::Color(0, 139, 0));  // Dark green when started
@@ -255,6 +255,20 @@ void Game::draw(sf::RenderTarget &window, sf::RenderStates states) const
     player1Info.setString(player1Name + "\nTime: " + p1TimeStr);
     player2Info.setString(player2Name + "\nTime: " + p2TimeStr);
 
+    //Hoorain
+    //setting player info to green and turning on timer for current player
+    if (whiteTurn) {
+        player1Info.setFillColor(sf::Color(0, 139, 0));  //player 1 info green
+        player2Info.setFillColor(sf::Color(139, 69, 19));  //player 2 info brown
+        player2Timer.stop();  // Stop black's timer
+        player1Timer.update(); // Start white's timer
+    } else {
+        player2Info.setFillColor(sf::Color(0, 139, 0));  //player 2 info green
+        player1Info.setFillColor(sf::Color(139, 69, 19));  //player 1 info brown
+        player1Timer.stop();  // Stop white's timer
+        player2Timer.update(); // Start black's timer
+    }
+    
     // Check for time up
     if (player1Timer.isTimeUp() || player2Timer.isTimeUp()) {
         gameStatus = false;
