@@ -6,8 +6,9 @@
 
 //laiba - board screen with the board grid playerinfo and time(not the pieces)
 //maira whole logic - movement, move validation, gameStatus, turn checker, pieces set up/display
+// Hoorain - Timer logic, right side of the board buttons and logic
 Game::Game(sf::RenderWindow& window, sf::Color c1, sf::Color c2, const std::string& player1, const std::string& player2, int timerLimit, const std::string& theme)
-    : window(window),isOver(false), whiteTurn(true), 
+    : window(window),isOver(false), whiteTurn(true), gameStatus(false),
         player1Name(player1), player2Name(player2), timerLimit(timerLimit), 
             player1Timer(timerLimit, sf::Vector2f(50.f, 20.f)),  player2Timer(timerLimit, sf::Vector2f(600.f, 20.f)), theme(theme)
 {
