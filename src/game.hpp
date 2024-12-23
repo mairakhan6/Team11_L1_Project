@@ -33,8 +33,6 @@ public:
 
     void startGame();
 
-    Timer player1Timer;
-    Timer player2Timer;
 private:
     vector<Square> moves;
     vector<sf::RectangleShape> newmoves;
@@ -71,6 +69,8 @@ private:
     std::string player2Name;   
     const std::string& theme;          // Player 2's name
     int timerLimit;                      // Timer limit
+    mutable Timer player1Timer;          //Player 1's Timer
+    mutable Timer player2Timer;          //Player 2's Timer
 
     mutable sf::Text player1Info;                // Text for player 1 info
     mutable sf::Text player2Info;                // Text for player 2 info
@@ -84,7 +84,7 @@ private:
     mutable sf::RectangleShape restartButtonBg;
     mutable sf::RectangleShape quitButtonBg;
 
-    std::string formatTime(float seconds) const;
+    mutable std::string formatTime(float seconds) const;
     void restartGame();
 };
 
